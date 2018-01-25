@@ -4,8 +4,8 @@ namespace Hcode;
 
 use Rain\Tpl;
 
-class Page {
-
+class Page 
+{
 	private $tpl;
 	private $options = [];
 	private $defaults = [
@@ -14,7 +14,12 @@ class Page {
 		"data"=>[]
 	];
 
-	// carrega o cabeçalho dad paginas 
+	/**
+	 * Carrega o cabeçalho da pagina
+	 * @param type|array $opts 
+	 * @param type|string $tpl_dir 
+	 * @return type
+	 */
 	public function __construct($opts = array(), $tpl_dir = "/views/")
 	{
 		$this->options = array_merge($this->defaults, $opts);
@@ -42,16 +47,25 @@ class Page {
 			$this->tpl->assign($key, $val);
 		}
 	}
-
-	// carrega o conteudo da pagina 
+ 
+	/**
+	 * Carrega o conteudo da pagina
+	 * @param type $tplName 
+	 * @param type|array $data 
+	 * @param type|bool $returnHTML 
+	 * @return type
+	 */
 	public function setTpl($tplName, $data = array(), $returnHTML = false)
 	{
 		$this->setData($data);
 
 		return $this->tpl->draw($tplName, $returnHTML);
 	}
-
-	// carrega o rodape da pagina 
+ 
+	/**
+	 * Carrega o rodape da pagina
+	 * @return type
+	 */
 	public function __destruct()
 	{
 		if ($this->options['footer'] === true) $this->tpl->draw("footer", false);
