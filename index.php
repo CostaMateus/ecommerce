@@ -139,6 +139,12 @@ $app->post('/admin/users/create', function() {
 
 	$_POST["inadmin"] = (isset($_POST["inadmin"]))?1:0;
 
+	$ops = [
+		"cost"=>10
+	];
+	
+	$_POST["despassword"] = password_hash($_POST["despassword"], PASSWORD_DEFAULT, $ops);
+
 	$user->setData($_POST);
 
 	$user->save();
@@ -206,13 +212,115 @@ $app->post('/admin/users/:iduser', function($iduser) {
 	$_POST["inadmin"] = (isset($_POST["inadmin"]))?1:0;
 
 	$user->get((int)$iduser);
-
 	$user->setData($_POST);
-
 	$user->update();
 
 	header("Location: /admin/users");
 	exit;
+
+});
+
+/**
+ * Rota da página de 'esqueci a senha'
+ * @param type '/admin/forgot' 
+ * @param type function( 
+ * @return type
+ */
+$app->get('/admin/forgot' , function() {
+
+	$page = new PageAdmin([
+		"header"=>false,
+		"footer"=>false
+	]);
+
+	$page->setTpl("forgot");
+
+});
+
+/**
+ * Rota _POST da pagina de 'esqueci a senha', envia o email
+ * @param type '/admin/forgot' 
+ * @param type function( 
+ * @return type
+ */
+$app->post('/admin/forgot' , function() {
+
+	$user = User::getForgot($_POST["email"]);
+
+	header("Location: /admin/forgot/sent");
+	exit;
+
+});
+
+/**
+ * Rota da página que confirma o envio do email de 'esqueci a senha'
+ * @param type '/admin/forgot/sent' 
+ * @param type function( 
+ * @return type
+ */
+$app->get('/admin/forgot/sent' , function() {
+
+	$page = new PageAdmin([
+		"header"=>false,
+		"footer"=>false
+	]);
+
+	$page->setTpl("forgot-sent");
+
+});
+
+/**
+ * Rota da página que reseta a senha do usuário
+ * @param type '/admin/forgot/reset' 
+ * @param type function( 
+ * @return type
+ */
+$app->get('/admin/forgot/reset' , function() {
+
+	$user = User::validForgotDecrypt($_GET["code"]);
+
+	$page = new PageAdmin([
+		"header"=>false,
+		"footer"=>false
+	]);
+
+	$page->setTpl("forgot-reset", array(
+		"name"=>$user["desperson"],
+		"code"=>$_GET["code"]
+	));
+
+});
+
+/**
+ * Rota _POST da página que reseta a senha do usuário, confirma o reset
+ * @param type '/admin/forgot/reset' 
+ * @param type function( 
+ * @return type
+ */
+$app->post('/admin/forgot/reset' , function() {
+
+	$forgot = User::validForgotDecrypt($_POST["code"]);
+
+	User::setForgotUsed($forgot["idrecovery"]);
+
+	$user = new User();
+
+	$user->get((int)$forgot["iduser"]);
+
+	$ops = [
+		"cost"=>10
+	];
+
+	$password = password_hash($_POST["password"], PASSWORD_DEFAULT, $ops);
+
+	$user->setPassword($password);
+
+	$page = new PageAdmin([
+		"header"=>false,
+		"footer"=>false
+	]);
+
+	$page->setTpl("forgot-reset-success");
 
 });
 
