@@ -15,15 +15,15 @@
 		<link href='http://fonts.googleapis.com/css?family=Raleway:400,100' rel='stylesheet' type='text/css'>
 
 		<!-- Bootstrap -->
-		<link rel="stylesheet" href="res/site/css/bootstrap.min.css">
+		<link rel="stylesheet" href="/res/site/css/bootstrap.min.css">
 
 		<!-- Font Awesome -->
-		<link rel="stylesheet" href="res/site/css/font-awesome.min.css">
+		<link rel="stylesheet" href="/res/site/css/font-awesome.min.css">
 
 		<!-- Custom CSS -->
-		<link rel="stylesheet" href="res/site/css/owl.carousel.css">
-		<link rel="stylesheet" href="res/site/css/style.css">
-		<link rel="stylesheet" href="res/site/css/responsive.css">
+		<link rel="stylesheet" href="/res/site/css/owl.carousel.css">
+		<link rel="stylesheet" href="/res/site/css/style.css">
+		<link rel="stylesheet" href="/res/site/css/responsive.css">
 
 		<style type="text/css">
 			.corpo {
@@ -83,7 +83,7 @@
 				<div class="row">
 					<div class="col-sm-6">
 						<div class="logo">
-							<h1><a href="#"><img src="res/site/img/logo.png"></a></h1>
+							<h1><a href="#"><img src="/res/site/img/logo.png"></a></h1>
 						</div>
 					</div>
 					

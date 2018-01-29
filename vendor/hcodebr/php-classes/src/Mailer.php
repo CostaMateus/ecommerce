@@ -8,7 +8,7 @@ class Mailer
 {
 	const USERNAME = "suporte@costamateus.com.br";
 
-	const PASSWORD = "";
+	const PASSWORD = "!";
 
 	const NAME_FROM = "Suporte CostaMateus";
 
