@@ -3,7 +3,6 @@
 use \Hcode\PageAdmin;
 use \Hcode\Model\User;
 
-
 /**
  * Rota da página que lista usuários
  * @param type '/admin/users' 
