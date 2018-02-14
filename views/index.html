@@ -3,6 +3,16 @@
 				<div class="block-slider block-slider4">
 					<ul class="" id="bxslider-home4">
 						<li>
+							<img src="/res/site/img/default.jpg" alt="Slide">
+							<div class="caption-group">
+								<h2 class="caption title">
+									TESTE <span class="primary">1 <strong>UM</strong></span>
+								</h2>
+								<h4 class="caption subtitle">Teste area banner</h4>
+								<a class="caption button-radius" href="#"><span class="icon"></span>Comprar</a>
+							</div>
+						</li>
+						<li>
 							<img src="/res/site/img/h4-slide.png" alt="Slide">
 							<div class="caption-group">
 								<h2 class="caption title">
