@@ -5,6 +5,11 @@
   <h1>
     Lista de Categorias
   </h1>
+  <ol class="breadcrumb">
+    <li><a href="/admin"><i class="fa fa-dashboard"></i> Home</a></li>
+    <li><a href="/admin/categories">Categorias</a></li>
+    <li class="active"><a href="/admin/categories/{$category.idcategory}">Editar - {$category.descategory}</a></li>
+  </ol>
 </section>
 
 <!-- Main content -->
@@ -22,7 +27,7 @@
           <div class="box-body">
             <div class="form-group">
               <label for="descategory">Nome da categoria</label>
-              <input type="text" class="form-control" id="descategory" name="descategory" placeholder="Digite o nome da categoria" value="{$category.descategory}">
+              <input type="text" class="form-control" id="descategory" name="descategory" placeholder="Digite o nome da categoria" value="{$category.descategory}" autofocus >
             </div>
           </div>
           <!-- /.box-body -->

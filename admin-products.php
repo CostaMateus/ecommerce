@@ -54,8 +54,8 @@ $app->post('/admin/products/create', function(){
 
 	$product->setData($_POST);
 
-	(($_FILES['desimage'] == null) ? $product->setImage($_FILES['desimage']) :  $product->setImage());
-	
+	(($_FILES['desimage']['name'] == "") ? $product->setImage() : $product->setImage($_FILES['desimage']));
+
 	$product->save();
 
 	header("Location: /admin/products");
@@ -122,7 +122,10 @@ $app->post('/admin/products/:idproduct', function($idproduct){
 
 	$product->setData($_POST);
 
-	((!$_FILES['desimage'] == null) ? $product->setImage($_FILES['desimage']) :  $product->setImage());
+	(($_FILES['desimage']['name'] == "") ? $product->setImage() : $product->setImage($_FILES['desimage']));
+
+	// var_dump($product->getdesimage());
+	// exit;
 
 	$product->update();
 

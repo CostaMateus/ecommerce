@@ -7,8 +7,8 @@
   </h1>
   <ol class="breadcrumb">
     <li><a href="/admin"><i class="fa fa-dashboard"></i> Home</a></li>
-    <li><a href="/admin/categories">Categorias</a></li>
-    <li class="active"><a href="/admin/categories/create">Cadastrar</a></li>
+    <li><a href="/admin/products">Produtos</a></li>
+    <li class="active"><a href="/admin/products/create">Cadastrar</a></li>
   </ol>
 </section>
 
@@ -27,7 +27,7 @@
           <div class="box-body">
             <div class="form-group">
               <label for="desproduct">Nome da produto</label>
-              <input type="text" class="form-control" id="desproduct" name="desproduct" placeholder="Digite o nome do produto">
+              <input type="text" class="form-control" id="desproduct" name="desproduct" placeholder="Digite o nome do produto" autofocus >
             </div>
             <div class="form-group">
               <label for="vlprice">Preço</label>

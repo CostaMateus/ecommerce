@@ -27,7 +27,7 @@
           <div class="box-body">
             <div class="form-group">
               <label for="descategory">Nome da categoria</label>
-              <input type="text" class="form-control" id="descategory" name="descategory" placeholder="Digite o nome da categoria">
+              <input type="text" class="form-control" id="descategory" name="descategory" placeholder="Digite o nome da categoria" autofocus >
             </div>
           </div>
           <!-- /.box-body -->
