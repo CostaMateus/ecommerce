@@ -14,7 +14,8 @@
     <div class="zigzag-bottom"></div>
     <div class="container">
         <div class="row">
-            {loop="$products"}
+        {$i=1}
+        {loop="$products"}
             <div class="col-md-3 col-sm-6">
                 <div class="single-shop-product">
                     <div class="product-upper">
@@ -31,7 +32,11 @@
                     </div>                       
                 </div>
             </div>
-            {/loop}
+            {if="$i++%4==0"}
+        </div>
+        <div class="row">
+            {/if}
+        {/loop}
         </div>
         
         <div class="row">

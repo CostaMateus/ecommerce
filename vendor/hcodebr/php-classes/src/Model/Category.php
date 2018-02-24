@@ -4,7 +4,6 @@ namespace Hcode\Model;
 
 use \Hcode\DB\Sql;
 use \Hcode\Model;
-use \Hcode\Mailer;
 
 class Category extends Model 
 {
@@ -87,7 +86,7 @@ class Category extends Model
 		}
 	}
 
-	public function getProductsPage($page = 1, $itemsPerPage = 3)
+	public function getProductsPage($page = 1, $itemsPerPage = 12)
 	{
 
 		$start = ($page - 1) * $itemsPerPage;
@@ -98,25 +97,17 @@ class Category extends Model
 			INNER JOIN tb_productscategories b ON a.idproduct = b.idproduct 
 			INNER JOIN tb_categories c ON c.idcategory = b.idcategory 
 			WHERE c.idcategory = :idcategory 
-			LIMIT $start, $itemsPerPage;", array(
+			LIMIT $start, $itemsPerPage;", [
 				':idcategory'=>$this->getidcategory()
-			));
-
-		// var_dump($start);
-		// exit;
+			]);
 
 		$rtotal = $sql->select("SELECT FOUND_ROWS() AS nrtotal;");
 
-		// var_dump($start);
-		// var_dump($r);
-		// var_dump($rtotal);
-		// exit;
-
-		return array(
+		return [
 			'data'=>$r,
 			'total'=>(int)$rtotal[0]['nrtotal'],
 			'pages'=>ceil($rtotal[0]['nrtotal'] / $itemsPerPage)
-		);
+		];
 
 	}
 
