@@ -24,12 +24,12 @@ class Page
 	{
 		$this->options = array_merge($this->defaults, $opts);
 
-		$config = array(
+		$config = [
 		    // "base_url"      => null,
 		    "tpl_dir"       => $_SERVER['DOCUMENT_ROOT'].$tpl_dir,
 		    "cache_dir"     => $_SERVER['DOCUMENT_ROOT']."/views-cache/",
 		    "debug"         => false
-		);
+		];
 
 		Tpl::configure( $config );
 

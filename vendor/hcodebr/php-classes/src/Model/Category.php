@@ -23,10 +23,10 @@ class Category extends Model
 	{
 		$sql = new Sql();
 
-		$r = $sql->select("CALL sp_categories_save(:idcategory, :descategory)", array(
+		$r = $sql->select("CALL sp_categories_save(:idcategory, :descategory)", [
 			":idcategory"=>$this->getidcategory(),
 			":descategory"=>$this->getdescategory()
-		));
+		]);
 
 		$this->setData($r[0]);
 
@@ -74,15 +74,15 @@ class Category extends Model
 
 		if ($related === true) 
 		{
-			return $sql->select("SELECT * FROM tb_products WHERE idproduct IN ( SELECT a.idproduct FROM tb_products a INNER JOIN tb_productscategories b ON a.idproduct = b.idproduct WHERE b.idcategory = :idcategory );", array(
-				':idcategory'=>$this->getidcategory()
-			));
+			return $sql->select("SELECT * FROM tb_products WHERE idproduct IN ( SELECT a.idproduct FROM tb_products a INNER JOIN tb_productscategories b ON a.idproduct = b.idproduct WHERE b.idcategory = :idcategory );", [
+				":idcategory"=>$this->getidcategory()
+			]);
 		}
 		else 
 		{
-			return $sql->select("SELECT * FROM tb_products WHERE idproduct NOT IN( SELECT a.idproduct FROM tb_products a INNER JOIN tb_productscategories b ON a.idproduct = b.idproduct WHERE b.idcategory =:idcategory );", array(
-				':idcategory'=>$this->getidcategory()
-			));
+			return $sql->select("SELECT * FROM tb_products WHERE idproduct NOT IN( SELECT a.idproduct FROM tb_products a INNER JOIN tb_productscategories b ON a.idproduct = b.idproduct WHERE b.idcategory =:idcategory );", [
+				":idcategory"=>$this->getidcategory()
+			]);
 		}
 	}
 
@@ -98,15 +98,15 @@ class Category extends Model
 			INNER JOIN tb_categories c ON c.idcategory = b.idcategory 
 			WHERE c.idcategory = :idcategory 
 			LIMIT $start, $itemsPerPage;", [
-				':idcategory'=>$this->getidcategory()
+				":idcategory"=>$this->getidcategory()
 			]);
 
 		$rtotal = $sql->select("SELECT FOUND_ROWS() AS nrtotal;");
 
 		return [
-			'data'=>$r,
-			'total'=>(int)$rtotal[0]['nrtotal'],
-			'pages'=>ceil($rtotal[0]['nrtotal'] / $itemsPerPage)
+			"data"=>$r,
+			"total"=>(int)$rtotal[0]['nrtotal'],
+			"pages"=>ceil($rtotal[0]['nrtotal'] / $itemsPerPage)
 		];
 
 	}
@@ -115,20 +115,20 @@ class Category extends Model
 	{
 		$sql = new Sql();
 
-		$sql->query("INSERT INTO tb_productscategories (idcategory, idproduct) VALUES (:idcategory, :idproduct)", array(
-			':idcategory'=>$this->getidcategory(),
-			':idproduct'=>$product->getidproduct()
-		));
+		$sql->query("INSERT INTO tb_productscategories (idcategory, idproduct) VALUES (:idcategory, :idproduct)", [
+			":idcategory"=>$this->getidcategory(),
+			":idproduct"=>$product->getidproduct()
+		]);
 	}
 
 	public function removeProduct(Product $product) 
 	{
 		$sql = new Sql();
 
-		$sql->query("DELETE FROM tb_productscategories WHERE idcategory = :idcategory AND idproduct = :idproduct", array(
-			':idcategory'=>$this->getidcategory(),
-			':idproduct'=>$product->getidproduct()
-		));
+		$sql->query("DELETE FROM tb_productscategories WHERE idcategory = :idcategory AND idproduct = :idproduct", [
+			":idcategory"=>$this->getidcategory(),
+			":idproduct"=>$product->getidproduct()
+		]);
 	}
 	
 }

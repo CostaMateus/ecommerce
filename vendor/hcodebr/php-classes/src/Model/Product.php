@@ -24,7 +24,7 @@ class Product extends Model
 	{
 		$sql = new Sql();
 
-		$r = $sql->select("CALL sp_products_save(:desproduct, :vlprice, :vlwidth, :vlheight, :vllength, :vlweight, :desurl, :desimage)", array(
+		$r = $sql->select("CALL sp_products_save(:desproduct, :vlprice, :vlwidth, :vlheight, :vllength, :vlweight, :desurl, :desimage)", [
 			":desproduct"=>$this->getdesproduct(),
 			":vlprice"=>$this->getvlprice(),
 			":vlwidth"=>$this->getvlwidth(),
@@ -33,7 +33,7 @@ class Product extends Model
 			":vlweight"=>$this->getvlweight(),
 			":desurl"=>$this->getdesurl(),
 			":desimage"=>$this->getdesimage()
-		));
+		]);
 
 		$this->setData($r[0]);
 	}
@@ -53,7 +53,7 @@ class Product extends Model
 	{
 		$sql = new Sql();
 
-		$r = $sql->select("CALL sp_productsupdate_save(:idproduct, :desproduct, :vlprice, :vlwidth, :vlheight, :vllength, :vlweight, :desurl, :desimage)", array(
+		$r = $sql->select("CALL sp_productsupdate_save(:idproduct, :desproduct, :vlprice, :vlwidth, :vlheight, :vllength, :vlweight, :desurl, :desimage)", [
 			":idproduct"=>$this->getidproduct(),
 			":desproduct"=>$this->getdesproduct(),
 			":vlprice"=>$this->getvlprice(),
@@ -64,7 +64,7 @@ class Product extends Model
 			":vlweight"=>$this->getvlweight(),
 			":desurl"=>$this->getdesurl(),
 			":desimage"=>$this->getdesimage()
-		));
+		]);
 
 		$this->setData($r[0]);
 	}
@@ -73,9 +73,9 @@ class Product extends Model
 	{
 		$sql = new Sql();
 
-		$sql->query("CALL sp_products_delete(:idproduct)", array(
+		$sql->query("CALL sp_products_delete(:idproduct)", [
 			":idproduct"=>$this->getidproduct()
-		));
+		]);
 
 	}
 
@@ -108,7 +108,7 @@ class Product extends Model
 		$sql = new Sql();
 
 		$r = $sql->select("SELECT * FROM tb_products WHERE desurl = :desurl LIMIT 1", [
-			':desurl'=>$desurl
+			":desurl"=>$desurl
 		]);
 
 		$this->setData($r[0]);
@@ -121,7 +121,7 @@ class Product extends Model
 		return $sql->select("SELECT * FROM tb_categories a 
 			INNER JOIN tb_productscategories b ON a.idcategory = b.idcategory 
 			WHERE b.idproduct = :idproduct", [
-				':idproduct'=>$this->getidproduct()
+				":idproduct"=>$this->getidproduct()
 			]);
 	}
 }

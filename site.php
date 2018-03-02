@@ -3,6 +3,7 @@
 use \Hcode\Page;
 use \Hcode\Model\Product;
 use \Hcode\Model\Category;
+use \Hcode\Model\Cart;
 
 
 /**
@@ -58,7 +59,12 @@ $app->get('/categories/:idcategory', function($idcategory){
 	]);
 });
 
-
+/**
+ * Rota da página que exibe os detalhes de um produto
+ * @param type '/products/:desurl' 
+ * @param type function($desurl 
+ * @return type
+ */
 $app->get('/products/:desurl', function($desurl){
 	
 	$product = new Product();
@@ -72,5 +78,23 @@ $app->get('/products/:desurl', function($desurl){
 		'categories'=>$product->getCategories()
 	]);
 });
+
+/**
+ * Rota da página que exibe os produtos no carrinho do cliente
+ * @param type '/cart' 
+ * @param type function( 
+ * @return type
+ */
+$app->get('/cart', function(){
+
+	$cart = Cart::getFromSession();
+
+	$page = new Page();
+
+	$page->setTpl("cart");
+
+});
+
+
 
 ?>
