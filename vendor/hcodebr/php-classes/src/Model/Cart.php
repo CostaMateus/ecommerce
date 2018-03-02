@@ -11,6 +11,10 @@ class Cart extends Model
 {	
 	const SESSION = "Cart";
 
+	/**
+	 * 
+	 * @return type
+	 */
 	public static function getFromSession()
 	{
 		$cart = new Cart();
@@ -47,12 +51,19 @@ class Cart extends Model
 		return $cart;
 	}
 
+	/**
+	 * 
+	 * @return type
+	 */
 	public function setToSession() 
 	{
 		$_SESSION[Cart::SESSION] = $this->getValues();
 	}
 
-
+	/**
+	 * 
+	 * @return type
+	 */
 	public function getFromSessionID()
 	{
 		$sql = new Sql();
@@ -67,6 +78,11 @@ class Cart extends Model
 		}
 	}
 
+	/**
+	 * 
+	 * @param int $idcart 
+	 * @return type
+	 */
 	public function get(int $idcart)
 	{
 		$sql = new Sql();
@@ -81,6 +97,10 @@ class Cart extends Model
 		}
 	}
 
+	/**
+	 * Salva carrinho no banco
+	 * @return type
+	 */
 	public function save() 
 	{
 		$sql = new Sql();
@@ -97,6 +117,66 @@ class Cart extends Model
 		$this->setData($r[0]);
 	}
 
+	/**
+	 * Adiciona um produto ao carrinho
+	 * @param Product $product 
+	 * @return type
+	 */
+	public function addProduct(Product $product)
+	{
+		$sql = new Sql();
+
+		$sql->query("INSERT INTO tb_cartsproducts (idcart, idproduct) VALUES (:idcart, :idproduct)", [
+			":idcart"=>$this->getidcart(),
+			":idproduct"=>$product->getidproduct()
+		]);
+	}
+
+	/**
+	 * 
+	 * @param Product $product 
+	 * @param type|bool $all 
+	 * @return type
+	 */
+	public function removeProduct(Product $product, $all = false)
+	{
+		$sql = new Sql();
+
+		if ($all) 
+		{
+			$sql->query("UPDATE tb_cartsproducts SET dtremoved = NOW() WHERE idcart = :idcart AND idproduct = :idproduct AND dtremoved IS NULL", [
+				":idcart"=>$this->getidcart(),
+				":idproduct"=>$product->getidproduct()
+			]);
+		}
+		else
+		{
+			$sql->query("UPDATE tb_cartsproducts SET dtremoved = NOW() WHERE idcart = :idcart AND idproduct = :idproduct AND dtremoved IS NULL LIMIT 1", [
+				":idcart"=>$this->getidcart(),
+				":idproduct"=>$product->getidproduct()
+			]);
+		}
+	}
+
+	/**
+	 * 
+	 * @return type
+	 */
+	public function getProducts()
+	{
+		$sql = new Sql();
+
+		$rs = $sql->select("SELECT b.idproduct, b.desproduct, b.vlprice, b.vlwidth, b.vlheight, b.vllength, b.vlweight, b.desurl, b.desimage, COUNT(*) AS nrqtd, SUM(b.vlprice) AS vltotal 
+			FROM tb_cartsproducts a 
+			INNER JOIN tb_products b ON a.idproduct = b.idproduct 
+			WHERE a.idcart = :idcart AND a.dtremoved IS NULL 
+			GROUP BY b.idproduct, b.desproduct, b.vlprice, b.vlwidth, b.vlheight, b.vllength, b.vlweight, b.desurl, b.desimage 
+			ORDER BY b.desproduct", [
+				":idcart"=>$this->getidcart()
+			]);
+
+		return $rs;
+	}
 }
 
  ?>

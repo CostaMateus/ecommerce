@@ -99,7 +99,7 @@
 									<div class="product-f-image">
 										<img src="/res/site/img/products/<?php echo htmlspecialchars( $value1["desimage"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" alt="<?php echo htmlspecialchars( $value1["desproduct"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
 										<div class="product-hover">
-											<a href="#" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Comprar</a>
+											<a href="/cart/<?php echo htmlspecialchars( $value1["idproduct"], ENT_COMPAT, 'UTF-8', FALSE ); ?>/add" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Comprar</a>
 											<a href="/products/<?php echo htmlspecialchars( $value1["desurl"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" class="view-details-link"><i class="fa fa-link"></i> Detalhes</a>
 										</div>
 									</div>
