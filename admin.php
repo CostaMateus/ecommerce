@@ -153,11 +153,7 @@ $app->post('/admin/forgot/reset' , function() {
 
 	$user->get((int)$forgot["iduser"]);
 
-	$ops = [
-		"cost"=>10
-	];
-
-	$password = password_hash($_POST["password"], PASSWORD_DEFAULT, $ops);
+	$password = User::getPasswordHash($_POST['password']);
 
 	$user->setPassword($password);
 
