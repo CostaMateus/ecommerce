@@ -222,6 +222,15 @@ class Cart extends Model
 
 		if ($totals['nrqtd'] > 0)
 		{
+			// INICIO CODIGO ORIGINAL AULA
+			/*
+			//Height (Altura)      máximo: 105cm
+			//Width  (Largura)     máximo: 105cm
+			//Length (Comprimento) máximo: 105cm
+			//Weight (Peso)        máximo: 30kg
+
+			//Somatório das dimensões (A + L + C) não deve superar: 200cm
+
 			if ($totals['vlheight'] < 2) $totals['vlheight'] = 2;
 
 			if ($totals['vllength'] < 16) $totals['vllength'] = 16;
@@ -230,6 +239,7 @@ class Cart extends Model
 				"nCdEmpresa"=>"",
 				"sDsSenha"=>"",
 				"nCdServico"=>"40010",
+				// "nCdServico"=>"40010,40045,40215,40290,41106",
 				"sCepOrigem"=>"01224001",
 				"sCepDestino"=>$nrzipcode,
 				"nVlPeso"=>$totals['vlweight'],
@@ -238,13 +248,42 @@ class Cart extends Model
 				"nVlAltura"=>$totals['vlheight'],
 				"nVlLargura"=>$totals['vlwidth'],
 				"nVlDiametro"=>"0",
-				"sCdMaoPropria"=>"S",
+				"sCdMaoPropria"=>"N",
 				"nVlValorDeclarado"=>$totals['vlprice'],
-				"sCdAvisoRecebimento"=>"S"
+				"sCdAvisoRecebimento"=>"N"
 			]);
 
 			$xml = simplexml_load_file("http://ws.correios.com.br/calculador/CalcPrecoPrazo.asmx/CalcPrecoPrazo?".$qs);
+			*/
+			// FIM CODIGO ORIGINAL AULA
 
+
+			// codigos de teste - multiplos serviços em uma request (linha nCdServico:)
+			/*
+			foreach($xml -> cServico as $row) {
+				if($row -> Erro == 0) 
+				{
+					echo $row -> Codigo . '<br>';
+					echo $row -> Valor . '<br>';
+					echo $row -> PrazoEntrega . '<br>';
+					echo $row -> ValorMaoPropria . '<br>';
+					echo $row -> ValorAvisoRecebimento . '<br>';
+					echo $row -> ValorValorDeclarado . '<br>';
+					echo $row -> EntregaDomiciliar . '<br>';
+					echo $row -> EntregaSabado;
+				} 
+				else 
+				{
+					echo $row -> MsgErro;
+				}
+				echo '<hr>';
+			}
+			exit;
+			*/
+			// fim cod teste
+
+			// INICIO CODIGO ORIGONAL DA AULA 
+			/*
 			$r = $xml->Servicos->cServico;
 			
 			if ($r->MsgErro != "")
@@ -263,10 +302,19 @@ class Cart extends Model
 			$this->save();
 
 			return $r;
+			*/
+			// FIM CODIGO ORIGINAL DA AULA
+
+			// Valores de teste pra qnd o 'CWS is down'
+			$this->setnrdays(5); //5 dias
+			$this->setvlfreight(Cart::formatValueToDecimal(25)); // R$25
+			$this->setdeszipcode($nrzipcode); 
+			$this->save();
 		}
 		else 
 		{
-
+			$this->setnrdays(0);
+			$this->setvlfreight(0);
 		}
 	}
 

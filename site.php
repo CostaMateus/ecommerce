@@ -4,6 +4,8 @@ use \Hcode\Page;
 use \Hcode\Model\Product;
 use \Hcode\Model\Category;
 use \Hcode\Model\Cart;
+use \Hcode\Model\User;
+use \Hcode\Model\Address;
 
 
 /**
@@ -167,7 +169,12 @@ $app->get('/cart/:idproduct/remove', function($idproduct){
 
 });
 
-
+/**
+ * Rota que calcula o valor do frete
+ * @param type '/cart/freight' 
+ * @param type function( 
+ * @return type
+ */
 $app->post('/cart/freight', function(){
 
 	$cart = Cart::getFromSession();
@@ -179,5 +186,149 @@ $app->post('/cart/freight', function(){
 
 });
 
+/**
+ * Rota da página de finalização do pedido
+ * @param type '/checkout' 
+ * @param type function( 
+ * @return type
+ */
+$app->get('/checkout', function(){
 
-?>
+    User::verifyLogin(false);
+
+	$cart = Cart::getFromSession();
+
+	$address = new Address(); 
+
+	$page = new Page();
+
+	$page->setTpl("checkout", [
+		"cart"=>$cart->getValues(),
+		// "address"=>$address->getValues()
+		"address"=>[
+			"desaddress"=>"",
+			"descomplement"=>"",
+			"desdistrict"=>"",
+			"descity"=>"",
+			"desstate"=>"",
+			"descountry"=>""
+		]
+	]);
+});
+
+/**
+ * Rota da página de login de usuário no site
+ * @param type '/login' 
+ * @param type function( 
+ * @return type
+ */
+$app->get('/login', function(){
+
+	$page = new Page();
+
+	$page->setTpl("login", [
+		"error"=>User::getMsgError(),
+		"errorRegister"=>User::getErrorRegister(),
+		"registerValues"=>(isset($_SESSION['registerValues'])) ? $_SESSION['registerValues'] : ["name"=>"", "email"=>"", "phone"=>""]
+	]);
+
+});
+
+/**
+ * Rota _POST da página de login de usuário no site
+ * @param type '/login' 
+ * @param type function( 
+ * @return type
+ */
+$app->post('/login', function(){
+
+	try {
+	
+		User::login($_POST['login'], $_POST['password']);
+	
+	} catch (Exception $e) {
+
+		User::setMsgError($e->getMessage());
+
+	}
+
+	header("Location: /checkout");
+	exit;
+
+});
+
+/**
+ * Rota que efetua o logout de um usuário
+ * @param type '/logout' 
+ * @param type function( 
+ * @return type
+ */
+$app->get('/logout', function(){
+	
+	User::logout();
+
+	header("Location: /login");
+	exit;
+
+});
+
+
+$app->post('/register', function(){
+
+	$_SESSION['registerValues'] = $_POST;
+
+	if (!isset($_POST['name']) || $_POST['name'] == '')
+	{
+		User::setErrorRegister("Insira o seu nome.");
+
+		header("Location: /login");
+		exit;
+	}
+
+	if (!isset($_POST['email']) || $_POST['email'] == '')
+	{
+		User::setErrorRegister("Insira um e-mail válido.");
+
+		header("Location: /login");
+		exit;
+	}
+
+	if (!isset($_POST['password']) || $_POST['password'] == '')
+	{
+		User::setErrorRegister("Insira uma senha.");
+
+		header("Location: /login");
+		exit;
+	}
+
+	if (User::checkLoginExist($_POST['email']) === true)
+	{
+		User::setErrorRegister("Este e-mail já está em uso!");
+
+		header("Location: /login");
+		exit;
+	}
+	
+	$user = new User();
+
+	$user->setData([
+		'inadmin'=>0,
+		'deslogin'=>$_POST['email'], 
+		'desperson'=>$_POST['name'], 
+		'desemail'=>$_POST['email'], 
+		'despassword'=>$_POST['password'], 
+		'nrphone'=>$_POST['phone']
+	]);
+
+	$user->save();
+
+	User::login($_POST['email'], $_POST['password']);
+
+	header("Location: /checkout");
+	exit;
+
+});
+
+
+
+ ?>
