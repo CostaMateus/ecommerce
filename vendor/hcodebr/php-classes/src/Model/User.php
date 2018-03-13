@@ -13,6 +13,7 @@ class User extends Model
 	const CIFRA = "AES-256-CBC";
 	const ERROR = "UserError";
 	const ERROR_REGISTER = "UserErrorRegister";
+	const SUCCESS = "UserMsgSuccess";
 	
 	/**
 	 * 
@@ -315,11 +316,6 @@ class User extends Model
 		
 		$idrecovery = openssl_decrypt($cryp, User::CIFRA, User::SECRET, OPENSSL_RAW_DATA, $IV);
 
-		//
-		var_dump($idrecovery);
-		exit;
-		//
-
 		$sql = new Sql();
 
 		$r = $sql->select("SELECT * FROM tb_userspasswordsrecoveries a INNER JOIN tb_users b USING(iduser) INNER JOIN tb_persons c USING(idperson) WHERE a.idrecovery = :idrecovery AND a.dtrecovery IS NULL AND DATE_ADD(a.dtregister, INTERVAL 1 HOUR) >= NOW();", [
@@ -449,6 +445,42 @@ class User extends Model
 	public static function clearErrorRegister() 
 	{
 		$_SESSION[User::ERROR_REGISTER] = NULL;
+	}
+
+	/**
+	 * Altera mensagem de sucesso da constante
+	 * @param type $msg 
+	 * @return type
+	 */
+	public static function setMsgSuccess($msg)
+	{
+
+		$_SESSION[User::SUCCESS] = $msg;
+
+	}
+
+	/**
+	 * Retorna mensagem de sucesso que está na constante
+	 * @return type
+	 */
+	public static function getMsgSuccess()
+	{
+		$msg = (isset($_SESSION[User::SUCCESS]) && $_SESSION[User::SUCCESS]) ? $_SESSION[User::SUCCESS] : "";
+
+		User::clearMsgSuccess();
+
+		return $msg;
+	}
+
+	/**
+	 * Apaga mensagem de sucesso da constante
+	 * @return type
+	 */
+	public static function clearMsgSuccess()
+	{
+		
+		$_SESSION[User::SUCCESS] = NULL;
+	
 	}
 
 }
