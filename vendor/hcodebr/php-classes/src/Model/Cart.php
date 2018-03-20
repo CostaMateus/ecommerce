@@ -223,23 +223,24 @@ class Cart extends Model
 		if ($totals['nrqtd'] > 0)
 		{
 			// INICIO CODIGO ORIGINAL AULA
-			/*
+			
 			//Height (Altura)      máximo: 105cm
 			//Width  (Largura)     máximo: 105cm
 			//Length (Comprimento) máximo: 105cm
 			//Weight (Peso)        máximo: 30kg
-
 			//Somatório das dimensões (A + L + C) não deve superar: 200cm
 
 			if ($totals['vlheight'] < 2) $totals['vlheight'] = 2;
+
+			if ($totals['vlwidth'] < 11) $totals['vlwidth'] = 11;
 
 			if ($totals['vllength'] < 16) $totals['vllength'] = 16;
 			
 			$qs = http_build_query([
 				"nCdEmpresa"=>"",
 				"sDsSenha"=>"",
-				"nCdServico"=>"40010",
-				// "nCdServico"=>"40010,40045,40215,40290,41106",
+				//"nCdServico"=>"40010",
+				"nCdServico"=>"40010,40045,40215,40290,41106",
 				"sCepOrigem"=>"01224001",
 				"sCepDestino"=>$nrzipcode,
 				"nVlPeso"=>$totals['vlweight'],
@@ -254,7 +255,7 @@ class Cart extends Model
 			]);
 
 			$xml = simplexml_load_file("http://ws.correios.com.br/calculador/CalcPrecoPrazo.asmx/CalcPrecoPrazo?".$qs);
-			*/
+			
 			// FIM CODIGO ORIGINAL AULA
 
 
@@ -283,7 +284,7 @@ class Cart extends Model
 			// fim cod teste
 
 			// INICIO CODIGO ORIGONAL DA AULA 
-			/*
+			
 			$r = $xml->Servicos->cServico;
 			
 			if ($r->MsgErro != "")
@@ -302,14 +303,14 @@ class Cart extends Model
 			$this->save();
 
 			return $r;
-			*/
+			
 			// FIM CODIGO ORIGINAL DA AULA
 
 			// Valores de teste pra qnd o 'CWS is down'
-			$this->setnrdays(5); //5 dias
+			/*$this->setnrdays(5); //5 dias
 			$this->setvlfreight(Cart::formatValueToDecimal(25)); // R$25
 			$this->setdeszipcode($nrzipcode); 
-			$this->save();
+			$this->save();*/
 		}
 		else 
 		{
