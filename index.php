@@ -13,6 +13,7 @@ $app->config('debug', true);
 require_once("functions.php");
 
 require_once("site.php");
+require_once("site-boleto.php");
 require_once("site-cart.php");
 require_once("site-checkout.php");
 require_once("site-forgot.php");

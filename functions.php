@@ -35,18 +35,6 @@ function getUserName()
 
 	return $user->getdesperson();
 }
-/**
- * 
- * @return type
- */
-function getCartVlSubTotal()
-{
-	$cart = Cart::getFromSession();
-
-	$totals = $cart->getProductsTotals();
-	
-	return formatPrice($totals['vlprice']);
-}
 
 /**
  * 
@@ -61,5 +49,17 @@ function getCartNrQtd()
 	return $totals['nrqtd'];
 }
 
+/**
+ * 
+ * @return type
+ */
+function getCartVlSubTotal()
+{
+	$cart = Cart::getFromSession();
+
+	$totals = $cart->getProductsTotals();
+	
+	return formatPrice($totals['vlprice']);
+}
 
  ?>
