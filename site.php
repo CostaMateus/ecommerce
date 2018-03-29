@@ -3,11 +3,8 @@
 use \Hcode\Page;
 use \Hcode\Model\Product;
 use \Hcode\Model\Category;
-use \Hcode\Model\Cart;
 use \Hcode\Model\User;
-use \Hcode\Model\Address;
 use \Hcode\Model\Order;
-use \Hcode\Model\OrderStatus;
 
 
 /**
@@ -202,79 +199,6 @@ $app->post('/register', function(){
 });
 
 /**
- * Rota do perfil do usuário do site
- * @param type '/profile' 
- * @param type function( 
- * @return type
- */
-$app->get('/profile', function(){
-
-	User::verifyLogin(false);
-
-	$user = User::getFromSession();
-
-	$page = new Page();
-
-	$page->setTpl("profile", [
-		'user'=>$user->getValues(),
-		'profileMsg'=>User::getMsgSuccess(),
-		'profileError'=>User::getMsgError()
-	]);
-
-});
-
-/**
- * Rota _POST do perfil do usuário, alteração de dados cadastrais
- * @param type '/profile' 
- * @param type function( 
- * @return type
- */
-$app->post('/profile', function(){
-
-	User::verifyLogin();
-
-	if (!isset($_POST['despersi]on']) || $_POST['desperson'] === '')
-	{
-		User::setMsgError("Preencha o seu nome.");
-		header("Location: /profile");
-		exit;
-	}
-	if (!isset($_POST['desemail']) || $_POST['desemail'] === '')
-	{
-		User::setMsgError("Preencha o seu e-mail.");
-		header("Location: /profile");
-		exit;
-	}
-
-	$user = User::getFromSession();
-
-	if ($_POST['desemail'] !== $user->getdesemail())
-	{
-		if (User::checkLoginExist($_POST['desemail']) === true)
-		{
-			User::setMsgError("Este endereço de e-mail já está cadastrado.");
-			header("Location: /profile");
-			exit;
-		} 
-	}
-
-
-	$_POST['inadmin'] = $user->getinadmin();
-	$_POST['despassword'] = $user->getdespassword();
-	$_POST['deslogin'] = $_POST['desemail'];
-
-	$user->setData($_POST);
-
-	$user->save();
-
-	User::setMsgSuccess("Dados alterados com sucesso!");
-
-	header("Location: /profile");
-	exit;
-
-});
-
-/**
  * Rota da página de finalização do pedido
  * @param type '/order/:idorder' 
  * @param type function($idorder 
@@ -296,43 +220,5 @@ $app->get('/order/:idorder', function($idorder){
 });
 
 
-$app->get('/profile/orders', function(){
-
-	User::verifyLogin(false);
-
-	$user = User::getFromSession();
-	
-	$page = new Page();
-
-	$page->setTpl("profile-orders", [
-		"orders"=>$user->getOrders()
-	]);
-
-});
-
-$app->get('/profile/orders/:idorder', function($idorder){
-
-	User::verifyLogin(false);
-
-	$order = new Order();
-
-	$order->get((int)$idorder);
-
-	$cart = new Cart();
-
-	$cart->get((int)$order->getidcart());
-
-	$cart->getCalculateTotal();
-
-	$page = new Page();
-
-	$page->setTpl("profile-orders-detail", [
-		"order"=>$order->getValues(),
-		"cart"=>$cart->getValues(),
-		"products"=>$cart->getProducts()
-	]);
-
-
-});
 
  ?>
