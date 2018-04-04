@@ -16,16 +16,23 @@ class Category extends Model
 	{
 		$sql = new Sql();
 
-		return $sql->select("SELECT * FROM tb_categories ORDER BY descategory;");
+		return $sql->select("
+			SELECT * 
+			FROM tb_categories 
+			ORDER BY descategory;");
 	}
 
+	/**
+	 * 
+	 * @return type
+	 */
 	public function save() 
 	{
 		$sql = new Sql();
 
-		$r = $sql->select("CALL sp_categories_save(:idcategory, :descategory)", [
-			":idcategory"=>$this->getidcategory(),
-			":descategory"=>$this->getdescategory()
+		$r = $sql->select("CALL sp_categories_save(:IDCATEGORY, :DESCATEGORY)", [
+			":IDCATEGORY"=>$this->getidcategory(),
+			":DESCATEGORY"=>$this->getdescategory()
 		]);
 
 		$this->setData($r[0]);
@@ -33,28 +40,46 @@ class Category extends Model
 		Category::updateFile();
 	}
 
+	/**
+	 * 
+	 * @param type $idcategory 
+	 * @return type
+	 */
 	public function get($idcategory)
 	{
 		$sql = new Sql();
 
-		$r = $sql->select("SELECT * FROM tb_categories WHERE idcategory = :idcategory;", [
-			":idcategory"=>$idcategory
+		$r = $sql->select("
+			SELECT * 
+			FROM tb_categories 
+			WHERE idcategory = :IDCATEGORY;", [
+			":IDCATEGORY"=>$idcategory
 		]);
 
 		$this->setData($r[0]);
 	}
 
+	/**
+	 * 
+	 * @return type
+	 */
 	public function delete()
 	{
 		$sql = new Sql();
 
-		$sql->query("DELETE FROM tb_categories WHERE idcategory = :idcategory;", [
-			":idcategory"=>$this->getidcategory()
+		$sql->query("
+			DELETE FROM tb_categories 
+			WHERE idcategory = :IDCATEGORY;", [
+			":IDCATEGORY"=>$this->getidcategory()
 		]);
 
 		Category::updateFile();
 	}
 
+	/**
+	 * 
+	 * @return type
+	 */
 	public static function updateFile()
 	{
 		$categories = Category::listAll();
@@ -68,24 +93,51 @@ class Category extends Model
 		file_put_contents($_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . "views" . DIRECTORY_SEPARATOR . "categories-menu.html", implode('', $html));
 	}
 
+	/**
+	 * 
+	 * @param type|bool $related 
+	 * @return type
+	 */
 	public function getProducts($related = true)
 	{
 		$sql = new Sql();
 
 		if ($related === true) 
 		{
-			return $sql->select("SELECT * FROM tb_products WHERE idproduct IN ( SELECT a.idproduct FROM tb_products a INNER JOIN tb_productscategories b ON a.idproduct = b.idproduct WHERE b.idcategory = :idcategory );", [
-				":idcategory"=>$this->getidcategory()
+			return $sql->select("
+				SELECT * 
+				FROM tb_products 
+				WHERE idproduct IN (
+					SELECT a.idproduct 
+					FROM tb_products a 
+					INNER JOIN tb_productscategories b ON a.idproduct = b.idproduct 
+					WHERE b.idcategory = :IDCATEGORY
+				);", [
+				":IDCATEGORY"=>$this->getidcategory()
 			]);
 		}
 		else 
 		{
-			return $sql->select("SELECT * FROM tb_products WHERE idproduct NOT IN( SELECT a.idproduct FROM tb_products a INNER JOIN tb_productscategories b ON a.idproduct = b.idproduct WHERE b.idcategory =:idcategory );", [
-				":idcategory"=>$this->getidcategory()
+			return $sql->select("
+				SELECT * 
+				FROM tb_products 
+				WHERE idproduct NOT IN (
+					SELECT a.idproduct 
+					FROM tb_products a 
+					INNER JOIN tb_productscategories b ON a.idproduct = b.idproduct 
+					WHERE b.idcategory =:IDCATEGORY
+				);", [
+				":IDCATEGORY"=>$this->getidcategory()
 			]);
 		}
 	}
 
+	/**
+	 * 
+	 * @param type $page 
+	 * @param type|int $itemsPerPage 
+	 * @return type
+	 */
 	public function getProductsPage($page = 1, $itemsPerPage = 12)
 	{
 
@@ -93,12 +145,14 @@ class Category extends Model
 
 		$sql = new Sql();
 
-		$r = $sql->select("SELECT SQL_CALC_FOUND_ROWS * FROM tb_products a 
+		$r = $sql->select("
+			SELECT SQL_CALC_FOUND_ROWS * 
+			FROM tb_products a 
 			INNER JOIN tb_productscategories b ON a.idproduct = b.idproduct 
 			INNER JOIN tb_categories c ON c.idcategory = b.idcategory 
-			WHERE c.idcategory = :idcategory 
+			WHERE c.idcategory = :IDCATEGORY 
 			LIMIT $start, $itemsPerPage;", [
-				":idcategory"=>$this->getidcategory()
+				":IDCATEGORY"=>$this->getidcategory()
 			]);
 
 		$rtotal = $sql->select("SELECT FOUND_ROWS() AS nrtotal;");
@@ -111,23 +165,37 @@ class Category extends Model
 
 	}
 
+	/**
+	 * 
+	 * @param Product $product 
+	 * @return type
+	 */
 	public function addProduct(Product $product) 
 	{
 		$sql = new Sql();
 
-		$sql->query("INSERT INTO tb_productscategories (idcategory, idproduct) VALUES (:idcategory, :idproduct)", [
-			":idcategory"=>$this->getidcategory(),
-			":idproduct"=>$product->getidproduct()
+		$sql->query("
+			INSERT INTO tb_productscategories (idcategory, idproduct) 
+			VALUES (:IDCATEGORY, :IDPRODUCT)", [
+			":IDCATEGORY"=>$this->getidcategory(),
+			":IDPRODUCT"=>$product->getidproduct()
 		]);
 	}
 
+	/**
+	 * 
+	 * @param Product $product 
+	 * @return type
+	 */
 	public function removeProduct(Product $product) 
 	{
 		$sql = new Sql();
 
-		$sql->query("DELETE FROM tb_productscategories WHERE idcategory = :idcategory AND idproduct = :idproduct", [
-			":idcategory"=>$this->getidcategory(),
-			":idproduct"=>$product->getidproduct()
+		$sql->query("
+			DELETE FROM tb_productscategories 
+			WHERE idcategory = :IDCATEGORY AND idproduct = :IDPRODUCT", [
+			":IDCATEGORY"=>$this->getidcategory(),
+			":IDPRODUCT"=>$product->getidproduct()
 		]);
 	}
 	

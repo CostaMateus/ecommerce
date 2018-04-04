@@ -69,8 +69,11 @@ class Cart extends Model
 	{
 		$sql = new Sql();
 
-		$r = $sql->select("SELECT * FROM tb_carts WHERE dessessionid = :dessessionid", [
-			":dessessionid"=>session_id()
+		$r = $sql->select("
+			SELECT * 
+			FROM tb_carts 
+			WHERE dessessionid = :DESSESSIONID", [
+			":DESSESSIONID"=>session_id()
 		]);
 
 		if (count($r) > 0) 
@@ -88,7 +91,10 @@ class Cart extends Model
 	{
 		$sql = new Sql();
 
-		$r = $sql->select("SELECT * FROM tb_carts WHERE idcart = :idcart", [
+		$r = $sql->select("
+			SELECT * 
+			FROM tb_carts 
+			WHERE idcart = :idcart", [
 			":idcart"=>$idcart
 		]);
 
@@ -106,13 +112,13 @@ class Cart extends Model
 	{
 		$sql = new Sql();
 
-		$r = $sql->select("CALL sp_carts_save(:idcart, :dessessionid, :iduser, :deszipcode, :vlfreight, :nrdays)", [
-			":idcart"=>$this->getidcart(),
-			":dessessionid"=>$this->getdessessionid(),
-			":iduser"=>$this->getiduser(),
-			":deszipcode"=>$this->getdeszipcode(),
-			":vlfreight"=>$this->getvlfreight(),
-			":nrdays"=>$this->getnrdays(),
+		$r = $sql->select("CALL sp_carts_save(:IDCART, :DESSESSIONID, :IDUSER, :DESZIPCODE, :VLFREIGHT, :NRDAYS)", [
+			":IDCART"=>$this->getidcart(),
+			":DESSESSIONID"=>$this->getdessessionid(),
+			":IDUSER"=>$this->getiduser(),
+			":DESZIPCODE"=>$this->getdeszipcode(),
+			":VLFREIGHT"=>$this->getvlfreight(),
+			":NRDAYS"=>$this->getnrdays(),
 		]);
 
 		$this->setData($r[0]);
@@ -127,9 +133,11 @@ class Cart extends Model
 	{
 		$sql = new Sql();
 
-		$sql->query("INSERT INTO tb_cartsproducts (idcart, idproduct) VALUES (:idcart, :idproduct)", [
-			":idcart"=>$this->getidcart(),
-			":idproduct"=>$product->getidproduct()
+		$sql->query("
+			INSERT INTO tb_cartsproducts (idcart, idproduct) 
+			VALUES (:IDCART, :IDPRODUCT)", [
+			":IDCART"=>$this->getidcart(),
+			":IDPRODUCT"=>$product->getidproduct()
 		]);
 
 		$this->getCalculateTotal();
@@ -147,16 +155,22 @@ class Cart extends Model
 
 		if ($all) 
 		{
-			$sql->query("UPDATE tb_cartsproducts SET dtremoved = NOW() WHERE idcart = :idcart AND idproduct = :idproduct AND dtremoved IS NULL", [
-				":idcart"=>$this->getidcart(),
-				":idproduct"=>$product->getidproduct()
+			$sql->query("
+				UPDATE tb_cartsproducts 
+				SET dtremoved = NOW() 
+				WHERE idcart = :IDCART AND idproduct = :IDPRODUCT AND dtremoved IS NULL", [
+				":IDCART"=>$this->getidcart(),
+				":IDPRODUCT"=>$product->getidproduct()
 			]);
 		}
 		else
 		{
-			$sql->query("UPDATE tb_cartsproducts SET dtremoved = NOW() WHERE idcart = :idcart AND idproduct = :idproduct AND dtremoved IS NULL LIMIT 1", [
-				":idcart"=>$this->getidcart(),
-				":idproduct"=>$product->getidproduct()
+			$sql->query("
+				UPDATE tb_cartsproducts 
+				SET dtremoved = NOW() 
+				WHERE idcart = :IDCART AND idproduct = :IDPRODUCT AND dtremoved IS NULL LIMIT 1", [
+				":IDCART"=>$this->getidcart(),
+				":IDPRODUCT"=>$product->getidproduct()
 			]);
 		}
 
@@ -171,13 +185,14 @@ class Cart extends Model
 	{
 		$sql = new Sql();
 
-		$rs = $sql->select("SELECT b.idproduct, b.desproduct, b.vlprice, b.vlwidth, b.vlheight, b.vllength, b.vlweight, b.desurl, b.desimage, COUNT(*) AS nrqtd, SUM(b.vlprice) AS vltotal 
+		$rs = $sql->select("
+			SELECT b.idproduct, b.desproduct, b.vlprice, b.vlwidth, b.vlheight, b.vllength, b.vlweight, b.desurl, b.desimage, COUNT(*) AS nrqtd, SUM(b.vlprice) AS vltotal 
 			FROM tb_cartsproducts a 
 			INNER JOIN tb_products b ON a.idproduct = b.idproduct 
-			WHERE a.idcart = :idcart AND a.dtremoved IS NULL 
+			WHERE a.idcart = :IDCART AND a.dtremoved IS NULL 
 			GROUP BY b.idproduct, b.desproduct, b.vlprice, b.vlwidth, b.vlheight, b.vllength, b.vlweight, b.desurl, b.desimage 
 			ORDER BY b.desproduct", [
-				":idcart"=>$this->getidcart()
+				":IDCART"=>$this->getidcart()
 			]);
 
 		return $rs;
@@ -195,8 +210,8 @@ class Cart extends Model
 			SELECT SUM(vlprice) AS vlprice, SUM(vlwidth) AS vlwidth, SUM(vlheight) AS vlheight, SUM(vllength) AS vllength, SUM(vlweight) AS vlweight, COUNT(*) AS nrqtd 
 			FROM tb_products a 
 			INNER JOIN tb_cartsproducts b ON a.idproduct = b.idproduct 
-			WHERE b.idcart = :idcart AND dtremoved IS NULL;", [
-				":idcart"=>$this->getidcart()
+			WHERE b.idcart = :IDCART AND dtremoved IS NULL;", [
+				":IDCART"=>$this->getidcart()
 			]);
 
 		if (count($r) > 0) 
@@ -331,7 +346,10 @@ class Cart extends Model
 		}
 	}
 
-
+	/**
+	 * 
+	 * @return type
+	 */
 	public function getValues()
 	{
 		$this->getCalculateTotal();
@@ -339,6 +357,10 @@ class Cart extends Model
 		return parent::getValues();
 	}
 
+	/**
+	 * 
+	 * @return type
+	 */
 	public function getCalculateTotal()
 	{
 
@@ -351,8 +373,6 @@ class Cart extends Model
 		$this->setvltotal($totals['vlprice'] + $this->getvlfreight());
 
 	}
-
-
 
 	/**
 	 * Formata valor do frete retornado pelo webservice dos Correios

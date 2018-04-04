@@ -3,6 +3,17 @@
 use \Hcode\Model\User;
 use \Hcode\Model\Cart;
 
+
+/**
+ * 
+ * @param type $date 
+ * @return type
+ */
+function formatDate($date)
+{
+	return date('d/m/Y', strtotime($date));
+}
+
 /**
  * Formata o valor do dinheiro para reais (R$) 
  * @param float $vlprice 

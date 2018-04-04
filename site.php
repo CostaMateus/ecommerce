@@ -109,6 +109,8 @@ $app->post('/login', function(){
 	try {
 	
 		User::login($_POST['login'], $_POST['password']);
+
+		
 	
 	} catch (Exception $e) {
 
@@ -116,7 +118,7 @@ $app->post('/login', function(){
 
 	}
 
-	header("Location: /");
+	header("Location: /checkout");
 	exit;
 
 });

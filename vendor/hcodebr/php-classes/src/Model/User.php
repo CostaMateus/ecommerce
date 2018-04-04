@@ -42,7 +42,11 @@ class User extends Model
 	{
 		$sql = new Sql();
 		
-		$r = $sql->select("SELECT * FROM tb_users a INNER JOIN tb_persons b ON a.idperson = b.idperson WHERE a.deslogin = :LOGIN", [
+		$r = $sql->select("
+			SELECT * 
+			FROM tb_users a 
+			INNER JOIN tb_persons b ON a.idperson = b.idperson 
+			WHERE a.deslogin = :LOGIN", [
 		     ":LOGIN"=>$login
 		]);
 
@@ -138,7 +142,10 @@ class User extends Model
 	{
 		$sql = new Sql();
 		
-		$r = $sql->select("SELECT * FROM tb_users WHERE deslogin = :LOGIN", [
+		$r = $sql->select("
+			SELECT * 
+			FROM tb_users 
+			WHERE deslogin = :LOGIN", [
 		     ":LOGIN"=>$login
 		]);
 
@@ -162,7 +169,11 @@ class User extends Model
 	{
 		$sql = new Sql();
 
-		return $sql->select("SELECT * FROM tb_users a INNER JOIN tb_persons b USING(idperson) ORDER BY b.desperson;");
+		return $sql->select("
+			SELECT * 
+			FROM tb_users a 
+			INNER JOIN tb_persons b USING(idperson) 
+			ORDER BY b.desperson;");
 	}
 
 	/**
@@ -173,13 +184,13 @@ class User extends Model
 	{
 		$sql = new Sql();
 
-		$r = $sql->select("CALL sp_users_save(:desperson, :deslogin, :despassword, :desemail, :nrphone, :inadmin)", [
-			":desperson"=>utf8_decode($this->getdesperson()),
-			":deslogin"=>$this->getdeslogin(),
-			":despassword"=>User::getPasswordHash($this->getdespassword()),
-			":desemail"=>$this->getdesemail(),
-			":nrphone"=>$this->getnrphone(),
-			":inadmin"=>$this->getinadmin()
+		$r = $sql->select("CALL sp_users_save(:DESPERSON, :DESLOGIN, :DESPASSWORD, :DESEMAIL, :NRPHONE, :INADMIN)", [
+			":DESPERSON"=>utf8_decode($this->getdesperson()),
+			":DESLOGIN"=>$this->getdeslogin(),
+			":DESPASSWORD"=>User::getPasswordHash($this->getdespassword()),
+			":DESEMAIL"=>$this->getdesemail(),
+			":NRPHONE"=>$this->getnrphone(),
+			":INADMIN"=>$this->getinadmin()
 		]);
 
 		$this->setData($r[0]);
@@ -194,8 +205,12 @@ class User extends Model
 	{
 		$sql = new Sql();
 
-		$r = $sql->select("SELECT * FROM tb_users a INNER JOIN tb_persons b USING(idperson) WHERE a.iduser = :iduser", [
-			":iduser"=>$iduser
+		$r = $sql->select("
+			SELECT * 
+			FROM tb_users a 
+			INNER JOIN tb_persons b USING(idperson) 
+			WHERE a.iduser = :IDUSER", [
+			":IDUSER"=>$iduser
 		]);
 
 		$data = $r[0];
@@ -213,14 +228,14 @@ class User extends Model
 	{
 		$sql = new Sql();
 
-		$r = $sql->select("CALL sp_usersupdate_save(:iduser, :desperson, :deslogin, :despassword, :desemail, :nrphone, :inadmin)", [
-			":iduser"=>$this->getiduser(),
-			":desperson"=>utf8_decode($this->getdesperson()),
-			":deslogin"=>$this->getdeslogin(),
-			":despassword"=>User::getPasswordHash($this->getdespassword()),
-			":desemail"=>$this->getdesemail(),
-			":nrphone"=>$this->getnrphone(),
-			":inadmin"=>$this->getinadmin()
+		$r = $sql->select("CALL sp_usersupdate_save(:IDUSER, :DESPERSON, :DESLOGIN, :DESPASSWORD, :DESEMAIL, :NRPHONE, :INADMIN)", [
+			":IDUSER"=>$this->getiduser(),
+			":DESPERSON"=>utf8_decode($this->getdesperson()),
+			":DESLOGIN"=>$this->getdeslogin(),
+			":DESPASSWORD"=>User::getPasswordHash($this->getdespassword()),
+			":DESEMAIL"=>$this->getdesemail(),
+			":NRPHONE"=>$this->getnrphone(),
+			":INADMIN"=>$this->getinadmin()
 		]);
 
 		$this->setData($r[0]);
@@ -234,8 +249,8 @@ class User extends Model
 	{
 		$sql = new Sql();
 
-		$sql->query("CALL sp_users_delete(:iduser)", [
-			":iduser"=>$this->getiduser()
+		$sql->query("CALL sp_users_delete(:IDUSER)", [
+			":IDUSER"=>$this->getiduser()
 		]);
 	}
 
@@ -249,8 +264,12 @@ class User extends Model
 	{
 		$sql = new Sql();
 
-		$r = $sql->select("SELECT * FROM tb_persons a INNER JOIN tb_users b USING(idperson) WHERE a.desemail = :email;", [
-			":email"=>$email
+		$r = $sql->select("
+			SELECT * 
+			FROM tb_persons a 
+			INNER JOIN tb_users b USING(idperson) 
+			WHERE a.desemail = :EMAIL;", [
+			":EMAIL"=>$email
 		]);
 
 		if (count($r) === 0) 
@@ -261,9 +280,9 @@ class User extends Model
 		{
 			$data = $r[0];
 
-			$r2 = $sql->select("CALL sp_userspasswordsrecoveries_create(:iduser, :desip)", [
-				":iduser"=>$data["iduser"],
-				":desip"=>$_SERVER["REMOTE_ADDR"]
+			$r2 = $sql->select("CALL sp_userspasswordsrecoveries_create(:IDUSER, :DESIP)", [
+				":IDUSER"=>$data["iduser"],
+				":DESIP"=>$_SERVER["REMOTE_ADDR"]
 			]);
 
 			if (count($r2) === 0) 
@@ -318,8 +337,15 @@ class User extends Model
 
 		$sql = new Sql();
 
-		$r = $sql->select("SELECT * FROM tb_userspasswordsrecoveries a INNER JOIN tb_users b USING(iduser) INNER JOIN tb_persons c USING(idperson) WHERE a.idrecovery = :idrecovery AND a.dtrecovery IS NULL AND DATE_ADD(a.dtregister, INTERVAL 1 HOUR) >= NOW();", [
-			":idrecovery"=>$idrecovery
+		$r = $sql->select("
+			SELECT * 
+			FROM tb_userspasswordsrecoveries a 
+			INNER JOIN tb_users b USING(iduser) 
+			INNER JOIN tb_persons c USING(idperson) 
+			WHERE a.idrecovery = :IDRECOVERY 
+			AND a.dtrecovery IS NULL 
+			AND DATE_ADD(a.dtregister, INTERVAL 1 HOUR) >= NOW();", [
+			":IDRECOVERY"=>$idrecovery
 		]);
 
 		if (count($r) === 0)
@@ -341,8 +367,11 @@ class User extends Model
 	{
 		$sql = new Sql();
 
-		$sql->query("UPDATE tb_userspasswordsrecoveries SET dtrecovery = NOW() WHERE idrecovery = :idrecovery;", [
-			":idrecovery"=>$idrecovery
+		$sql->query("
+			UPDATE tb_userspasswordsrecoveries 
+			SET dtrecovery = NOW() 
+			WHERE idrecovery = :IDRECOVERY;", [
+			":IDRECOVERY"=>$idrecovery
 		]);
 	}
 
@@ -355,9 +384,12 @@ class User extends Model
 	{
 		$sql = new Sql();
 
-		$sql->query("UPDATE tb_users SET despassword = :password WHERE iduser = :iduser;", [
-			":password"=>$password,
-			":iduser"=>$this->getiduser()
+		$sql->query("
+			UPDATE tb_users 
+			SET despassword = :PASSWORD 
+			WHERE iduser = :IDUSER;", [
+			":PASSWORD"=>$password,
+			":IDUSER"=>$this->getiduser()
 		]); 
 	}
 
@@ -495,8 +527,8 @@ class User extends Model
 			INNER JOIN tb_users d ON d.iduser = a.iduser 
 			INNER JOIN tb_addresses e USING(idaddress) 
 			INNER JOIN tb_persons f ON f.idperson = d.idperson
-			WHERE a.iduser = :iduser", [
-				":iduser"=>$this->getiduser()
+			WHERE a.iduser = :IDUSER", [
+				":IDUSER"=>$this->getiduser()
 			]);
 
 		return $r;

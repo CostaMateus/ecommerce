@@ -17,68 +17,94 @@ class Product extends Model
 	{
 		$sql = new Sql();
 
-		return $sql->select("SELECT * FROM tb_products ORDER BY idproduct;");
+		return $sql->select("
+			SELECT * 
+			FROM tb_products 
+			ORDER BY idproduct;");
 	}
 
+	/**
+	 * 
+	 * @return type
+	 */
 	public function save() 
 	{
 		$sql = new Sql();
 
-		$r = $sql->select("CALL sp_products_save(:desproduct, :vlprice, :vlwidth, :vlheight, :vllength, :vlweight, :desurl, :desimage)", [
-			":desproduct"=>$this->getdesproduct(),
-			":vlprice"=>$this->getvlprice(),
-			":vlwidth"=>$this->getvlwidth(),
-			":vlheight"=>$this->getvlheight(),
-			":vllength"=>$this->getvllength(),
-			":vlweight"=>$this->getvlweight(),
-			":desurl"=>$this->getdesurl(),
-			":desimage"=>$this->getdesimage()
+		$r = $sql->select("CALL sp_products_save(:DESPRODUCT, :VLPRICE, :VLWIDTH, :VLHEIGHT, :VLLENGTH, :VLWEIGHT, :DESURL, :DESIMAGE)", [
+			":DESPRODUCT"=>$this->getdesproduct(),
+			":VLPRICE"=>$this->getvlprice(),
+			":VLWIDTH"=>$this->getvlwidth(),
+			":VLHEIGHT"=>$this->getvlheight(),
+			":VLLENGTH"=>$this->getvllength(),
+			":VLWEIGHT"=>$this->getvlweight(),
+			":DESURL"=>$this->getdesurl(),
+			":DESIMAGE"=>$this->getdesimage()
 		]);
 
 		$this->setData($r[0]);
 	}
 
+	/**
+	 * 
+	 * @param type $idproduct 
+	 * @return type
+	 */
 	public function get($idproduct)
 	{
 		$sql = new Sql();
 
-		$r = $sql->select("SELECT * FROM tb_products WHERE idproduct = :idproduct;", [
-			":idproduct"=>$idproduct
+		$r = $sql->select("
+			SELECT * 
+			FROM tb_products 
+			WHERE idproduct = :IDPRODUCT;", [
+			":IDPRODUCT"=>$idproduct
 		]);
 
 		$this->setData($r[0]);
 	}
 
+	/**
+	 * 
+	 * @return type
+	 */
 	public function update()
 	{
 		$sql = new Sql();
 
-		$r = $sql->select("CALL sp_productsupdate_save(:idproduct, :desproduct, :vlprice, :vlwidth, :vlheight, :vllength, :vlweight, :desurl, :desimage)", [
-			":idproduct"=>$this->getidproduct(),
-			":desproduct"=>$this->getdesproduct(),
-			":vlprice"=>$this->getvlprice(),
-			":vlwidth"=>$this->getvlwidth(),
-			":vlheight"=>$this->getvlheight(),
-			":vllength"=>$this->getvllength(),
-			":vlweight"=>$this->getvlweight(),
-			":vlweight"=>$this->getvlweight(),
-			":desurl"=>$this->getdesurl(),
-			":desimage"=>$this->getdesimage()
+		$r = $sql->select("CALL sp_productsupdate_save(:IDPRODUCT, :DESPRODUCT, :VLPRICE, :VLWIDTH, :VLHEIGHT, :VLLENGTH, :VLWEIGHT, :DESURL, :DESIMAGE)", [
+			":IDPRODUCT"=>$this->getidproduct(),
+			":DESPRODUCT"=>$this->getdesproduct(),
+			":VLPRICE"=>$this->getvlprice(),
+			":VLWIDTH"=>$this->getvlwidth(),
+			":VLHEIGHT"=>$this->getvlheight(),
+			":VLLENGTH"=>$this->getvllength(),
+			":VLWEIGHT"=>$this->getvlweight(),
+			":DESURL"=>$this->getdesurl(),
+			":DESIMAGE"=>$this->getdesimage()
 		]);
 
 		$this->setData($r[0]);
 	}
 
+	/**
+	 * 
+	 * @return type
+	 */
 	public function delete()
 	{
 		$sql = new Sql();
 
-		$sql->query("CALL sp_products_delete(:idproduct)", [
-			":idproduct"=>$this->getidproduct()
+		$sql->query("CALL sp_products_delete(:IDPRODUCT)", [
+			":IDPRODUCT"=>$this->getidproduct()
 		]);
-
 	}
 
+	/**
+	 * 
+	 * @param type|null $file 
+	 * @return type
+	 */
 	public function setImage($file = null)
 	{
 		if ($file === null) 
@@ -103,25 +129,40 @@ class Product extends Model
 		}
 	}
 
+	/**
+	 * 
+	 * @param type $desurl 
+	 * @return type
+	 */
 	public function getFromURL($desurl)
 	{
 		$sql = new Sql();
 
-		$r = $sql->select("SELECT * FROM tb_products WHERE desurl = :desurl LIMIT 1", [
-			":desurl"=>$desurl
+		$r = $sql->select("
+			SELECT * 
+			FROM tb_products 
+			WHERE desurl = :DESURL 
+			LIMIT 1", [
+			":DESURL"=>$desurl
 		]);
 
 		$this->setData($r[0]);
 	}
 
+	/**
+	 * 
+	 * @return type
+	 */
 	public function getCategories()
 	{
 		$sql = new Sql();
 
-		return $sql->select("SELECT * FROM tb_categories a 
+		return $sql->select("
+			SELECT * 
+			FROM tb_categories a 
 			INNER JOIN tb_productscategories b ON a.idcategory = b.idcategory 
-			WHERE b.idproduct = :idproduct", [
-				":idproduct"=>$this->getidproduct()
+			WHERE b.idproduct = :IDPRODUCT", [
+				":IDPRODUCT"=>$this->getidproduct()
 			]);
 	}
 }
