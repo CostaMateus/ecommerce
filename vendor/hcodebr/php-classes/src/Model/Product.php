@@ -165,4 +165,63 @@ class Product extends Model
 				":IDPRODUCT"=>$this->getidproduct()
 			]);
 	}
+
+	/**
+	 * 
+	 * @param type $page 
+	 * @param type|int $itemsPerPage 
+	 * @return type
+	 */
+	public static function getPage($page = 1, $itemsPerPage = 10)
+	{
+
+		$start = ($page - 1) * $itemsPerPage;
+
+		$sql = new Sql();
+
+		$r = $sql->select("
+			SELECT SQL_CALC_FOUND_ROWS * 
+			FROM tb_products 
+			ORDER BY idproduct 
+			LIMIT $start, $itemsPerPage;");
+
+		$rtotal = $sql->select("SELECT FOUND_ROWS() AS nrtotal;");
+
+		return [
+			"data"=>$r,
+			"total"=>(int)$rtotal[0]['nrtotal'],
+			"pages"=>ceil($rtotal[0]['nrtotal'] / $itemsPerPage)
+		];
+	}
+
+	/**
+	 * 
+	 * @param type $page 
+	 * @param type|int $itemsPerPage 
+	 * @return type
+	 */
+	public static function getPageSearch($search, $page = 1, $itemsPerPage = 10)
+	{
+
+		$start = ($page - 1) * $itemsPerPage;
+
+		$sql = new Sql();
+
+		$r = $sql->select("
+			SELECT SQL_CALC_FOUND_ROWS * 
+			FROM tb_products 
+			WHERE desproduct LIKE :SEARCH 
+			ORDER BY idproduct 
+			LIMIT $start, $itemsPerPage;", [
+				":SEARCH"=>"%" . $search . "%"
+			]);
+
+		$rtotal = $sql->select("SELECT FOUND_ROWS() AS nrtotal;");
+
+		return [
+			"data"=>$r,
+			"total"=>(int)$rtotal[0]['nrtotal'],
+			"pages"=>ceil($rtotal[0]['nrtotal'] / $itemsPerPage)
+		];
+	}
 }
