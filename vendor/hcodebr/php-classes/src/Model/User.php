@@ -585,7 +585,7 @@ class User extends Model
 			OR a.deslogin LIKE :SEARCH 
 			ORDER BY b.desperson
 			LIMIT $start, $itemsPerPage;", [
-				":SEARCH"=>"%".$search."%"
+				":SEARCH"=>"%" . $search . "%"
 			]);
 
 		$rtotal = $sql->select("SELECT FOUND_ROWS() AS nrtotal;");
