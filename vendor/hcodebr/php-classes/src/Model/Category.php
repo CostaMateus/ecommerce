@@ -162,7 +162,6 @@ class Category extends Model
 			"total"=>(int)$rtotal[0]['nrtotal'],
 			"pages"=>ceil($rtotal[0]['nrtotal'] / $itemsPerPage)
 		];
-
 	}
 
 	/**
