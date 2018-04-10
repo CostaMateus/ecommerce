@@ -28,6 +28,8 @@ class Page
 		    // "base_url"      => null,
 		    "tpl_dir"       => $_SERVER['DOCUMENT_ROOT'].$tpl_dir,
 		    "cache_dir"     => $_SERVER['DOCUMENT_ROOT']."/views-cache/",
+		    // "tpl_dir"       => "/home/u265008281/public_html" . $tpl_dir,
+		    // "cache_dir"     => "/home/u265008281/public_html" . "/views-cache/",
 		    "debug"         => false
 		];
 
