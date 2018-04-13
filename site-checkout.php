@@ -57,6 +57,12 @@ $app->get('/checkout', function(){
 	]);
 });
 
+/**
+ * 
+ * @param type '/checkout' 
+ * @param type function( 
+ * @return type
+ */
 $app->post('/checkout', function(){
 
 	User::verifyLogin(false);
@@ -72,6 +78,14 @@ $app->post('/checkout', function(){
 	if (!isset($_POST['desaddress']) || $_POST['desaddress'] === '')
 	{
 		Cart::setMsgError("Informe o endereço.");
+
+		header("Location: /checkout");
+		exit;
+	}
+
+	if (!isset($_POST['desnumber']) || $_POST['desnumber'] === '')
+	{
+		Cart::setMsgError("Informe o número.");
 
 		header("Location: /checkout");
 		exit;
@@ -136,8 +150,48 @@ $app->post('/checkout', function(){
 
 	$order->save();
 
-	header("Location: /order/" . $order->getidorder());
+	switch ((int)$_POST['payment-method']) {
+		case 1:
+			header("Location: /order/" . $order->getidorder() . "/pagseguro");
+			break;
+		case 2:
+			header("Location: /order/" . $order->getidorder() . "/paypal");
+			break;
+		
+		default:
+			break;
+	}
+
 	exit;
+
+});
+
+/**
+ * 
+ * @param type '/order/:idorder/paypal' 
+ * @param type function($idorder 
+ * @return type
+ */
+$app->get('/order/:idorder/paypal', function($idorder){
+
+	User::verifyLogin();
+
+	$order = new Order();
+
+	$order->get((int)$idorder);
+
+	$cart = $order->getCart();
+
+	$page = new Page([
+		"header"=>false,
+		"footer"=>false
+	]);
+
+	$page->setTpl("payment-paypal", [
+		"order"=>$order->getValues(),
+		"cart"=>$cart->getValues(),
+		"products"=>$cart->getProducts()
+	]);
 
 });
 

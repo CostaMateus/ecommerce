@@ -52,7 +52,8 @@
 											</div>
 										</div>
 										<p id="billing_address_2_field" class="form-row form-row-wide address-field">
-											<input type="text" value="{$address.descomplement}" placeholder="Complemento (opcional)" id="billing_address_2" name="descomplement" class="input-text ">
+											<label class="" for="billing_district">Complemento (opcional) </label>
+											<input type="text" value="{$address.descomplement}" placeholder="Ex: apto 125A" id="billing_address_2" name="descomplement" class="input-text ">
                                         </p>
                                         <p id="billing_district_field" class="form-row form-row-wide address-field validate-required" data-o_class="form-row form-row-wide address-field validate-required">
 											<label class="" for="billing_district">Bairro <abbr title="required" class="required">*</abbr>
@@ -89,7 +90,7 @@
 															{$value.desproduct} <strong class="product-quantity">× {$value.nrqtd}</strong> 
 														</td>
 														<td class="product-total">
-															<span class="amount">R${function="format_real($value.vltotal)"}</span>
+															<span class="amount">R${function="formatPrice($value.vltotal)"}</span>
 														</td>
                                                     </tr>
                                                     {/loop}
@@ -97,22 +98,30 @@
 												<tfoot>
 													<tr class="cart-subtotal">
 														<th>Subtotal</th>
-														<td><span class="amount">R${function="format_real($cart.vlsubtotal)"}</span>
+														<td><span class="amount">R${function="formatPrice($cart.vlsubtotal)"}</span>
 														</td>
 													</tr>
 													<tr class="shipping">
 														<th>Frete</th>
 														<td>
-															R${function="format_real($cart.vlfreight)"}
+															R${function="formatPrice($cart.vlfreight)"}
 															<input type="hidden" class="shipping_method" value="free_shipping" id="shipping_method_0" data-index="0" name="shipping_method[0]">
 														</td>
 													</tr>
 													<tr class="order-total">
 														<th>Total do Pedido</th>
-														<td><strong><span class="amount">R${function="format_real($cart.vltotal)"}</span></strong> </td>
+														<td><strong><span class="amount">R${function="formatPrice($cart.vltotal)"}</span></strong> </td>
 													</tr>
 												</tfoot>
 											</table>
+											<p id="billing_state_field" class="form-row form-row-first " data-o_class="form-row form-row-first ">
+												<input type="radio" id="payment-pagseguro" style="float:left; margin: 30px 15px;" name="payment-method" placeholder="" value="1">
+												<label class="" for="payment-pagseguro"><img style="height: 64px;" src="/res/site/img/payment/logo-pagseguro.png" ></label>
+											</p>
+											<p id="billing_state_field" class="form-row form-row-first " data-o_class="form-row form-row-first ">
+												<input type="radio" id="payment-paypal" style="float:left; margin: 30px 15px;" name="payment-method" placeholder="" value="2" checked="checked">
+												<label class="" for="payment-paypal"><img style="height: 64px;" src="/res/site/img/payment/logo-paypal.png" ></label>
+											</p>
 											<div id="payment">
 												<div class="form-row place-order">
 													<input type="submit" data-value="Place order" value="Continuar" id="place_order" name="woocommerce_checkout_place_order" class="button alt">
