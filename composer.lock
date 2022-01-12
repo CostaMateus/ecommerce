@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c66ce4c5752112195807d5786865ac71",
+    "content-hash": "25a7c86da4c2e999b8c93268117991cc",
     "packages": [
         {
             "name": "phpmailer/phpmailer",
@@ -70,6 +70,10 @@
                 }
             ],
             "description": "PHPMailer is a full-featured email creation and transfer class for PHP",
+            "support": {
+                "issues": "https://github.com/PHPMailer/PHPMailer/issues",
+                "source": "https://github.com/PHPMailer/PHPMailer/tree/v6.5.0"
+            },
             "funding": [
                 {
                     "url": "https://github.com/Synchro",
@@ -107,6 +111,10 @@
                 }
             ],
             "description": "easy and fast template engine",
+            "support": {
+                "issues": "https://github.com/rainphp/raintpl3/issues",
+                "source": "https://github.com/rainphp/raintpl3/tree/3.0.0"
+            },
             "time": "2012-12-24T05:24:32+00:00"
         },
         {
@@ -150,6 +158,10 @@
                 "rest",
                 "router"
             ],
+            "support": {
+                "issues": "https://github.com/slimphp/Slim/issues",
+                "source": "https://github.com/slimphp/Slim/tree/2.0.0"
+            },
             "time": "2012-09-09T14:54:09+00:00"
         },
         {
@@ -158,17 +170,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/verot/class.upload.php.git",
-                "reference": "d63b7568513edb5947ddd77ff082e6258796244b"
+                "reference": "4f6c0aad06a4777d3eddc480fd3e25a2cdc0a8ff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/verot/class.upload.php/zipball/d63b7568513edb5947ddd77ff082e6258796244b",
-                "reference": "d63b7568513edb5947ddd77ff082e6258796244b",
+                "url": "https://api.github.com/repos/verot/class.upload.php/zipball/4f6c0aad06a4777d3eddc480fd3e25a2cdc0a8ff",
+                "reference": "4f6c0aad06a4777d3eddc480fd3e25a2cdc0a8ff",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "classmap": [
@@ -191,7 +204,12 @@
                 "gd",
                 "upload"
             ],
-            "time": "2018-01-09T22:13:42+00:00"
+            "support": {
+                "email": "colin@verot.net",
+                "issues": "https://github.com/verot/class.upload.php/issues",
+                "source": "https://github.com/verot/class.upload.php/tree/master"
+            },
+            "time": "2021-10-06T20:46:58+00:00"
         }
     ],
     "packages-dev": [],
@@ -204,5 +222,5 @@
     "prefer-lowest": false,
     "platform": [],
     "platform-dev": [],
-    "plugin-api-version": "1.1.0"
+    "plugin-api-version": "2.1.0"
 }
